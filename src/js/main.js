@@ -1,6 +1,7 @@
 import '../styles/main.scss';
 
 import video from './video';
+import audioViz from './audioVisualizer';
 
 // global
 const width = window.innerWidth;
@@ -24,7 +25,7 @@ if (navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices.getUserMedia({ video: true, audio: true })
     .then(stream => {
       video(stream, webgl);
-      // audioViz(stream);
+      audioViz(stream, rW, rH);
     })
     .catch(e => console.log(e));
 }
