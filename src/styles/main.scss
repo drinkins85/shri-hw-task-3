@@ -20,11 +20,9 @@ body {
 
 .webgl {
   z-index: 1;
-
   outline: darkred 1px solid;
   margin: auto;
-  /*filter: url('filter.svg#inlineMatrix') contrast(350%) brightness(120%) saturate(90%);*/
-
+  filter: url('../img/filter.svg#inlineMatrix') contrast(350%) brightness(120%) saturate(90%);
 }
 
 .viz {

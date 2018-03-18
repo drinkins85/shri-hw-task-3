@@ -39,6 +39,7 @@ const common = {
               options: {
                 minimize: isProduction(),
                 sourceMap: isProduction(),
+                publicPath: '/',
               },
             },
             {
@@ -86,7 +87,7 @@ const common = {
     }),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
-      inject: false
+      inject: false,
     }),
   ],
 };

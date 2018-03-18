@@ -1,3 +1,5 @@
+import detectMoving from './moveDetector';
+
 function render(stream, canvasElement) {
   const gl = canvasElement.getContext('webgl');
   if (!gl) {
@@ -32,7 +34,7 @@ function render(stream, canvasElement) {
   const texture = initTexture(gl);
   const video = setupVideo();
 
-  // detectMoving(video);
+  detectMoving(video, width, height);
 
   let copyVideo = false;
 

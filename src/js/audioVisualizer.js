@@ -17,7 +17,7 @@ function audioViz(stream, rW, rH) {
     const curve = new Float32Array(n_samples);
     const deg = Math.PI / 180;
 
-    for (let i=0; i < n_samples; ++i){
+    for (let i = 0; i < n_samples; ++i){
       const x = i * 2 / n_samples - 1;
       curve[i] = (3 + k) * x * 20 * deg / (Math.PI + k * Math.abs(x));
     }
@@ -28,7 +28,7 @@ function audioViz(stream, rW, rH) {
   canvas.style.width = rW + 'px';
   canvas.style.top = (rH - 100) + 'px';
   canvas.style.left = ((window.innerWidth - rW)/2) + 'px';
-  const canvasCtx = canvas.getContext("2d");
+  const canvasCtx = canvas.getContext('2d');
 
 
   let drawVisual;
@@ -52,12 +52,9 @@ function audioViz(stream, rW, rH) {
     const dataArray = new Uint8Array(bufferLength);
     canvasCtx.clearRect(0, 0, rW, HEIGHT);
 
-    const draw = function() {
-
+    function draw() {
       drawVisual = requestAnimationFrame(draw);
-
       analyser.getByteTimeDomainData(dataArray);
-
       canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
       canvasCtx.lineWidth = 2;
       canvasCtx.strokeStyle = 'rgb(255, 255, 255)';
