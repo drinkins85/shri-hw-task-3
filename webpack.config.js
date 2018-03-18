@@ -11,7 +11,7 @@ const env = process.env.NODE_ENV;
 
 const PATHS = {
   source: path.join(__dirname, 'src'),
-  build: path.join(__dirname, 'public'),
+  build: path.join(__dirname, 'docs'),
 };
 
 const common = {
@@ -82,7 +82,7 @@ const common = {
   },
   plugins: [
     new ExtractTextPlugin({
-      filename: '/css/style.css',
+      filename: 'css/style.css',
       publicPath: PATHS.build,
     }),
     new HtmlWebpackPlugin({
