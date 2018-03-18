@@ -16,6 +16,11 @@ if (height < rH) {
   rH = height;
 }
 
+
+window.addEventListener('resize', function () {
+  location.reload();
+});
+
 const webgl = document.querySelector('.webgl');
 webgl.width = rW;
 webgl.height = rH;
@@ -48,3 +53,4 @@ function setupVideo(stream, videoWidth, videoHeight) {
     videoElement.onerror = e => reject(e);
   });
 }
+
