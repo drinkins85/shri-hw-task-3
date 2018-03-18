@@ -15,22 +15,37 @@ function detectMoving(video, rW, rH) {
   canvasSource.style.display = 'none';
   canvasBlended.style.display = 'none';
 
-  const notes = document.querySelectorAll('.notes .note');
+  const indicatorsPerLine = 12;
+  const indicatorsPerCol = 12;
+  const indicatorWidth = (rW / indicatorsPerLine) - 1;
+  const indicatorHeight = (rH / indicatorsPerCol) - 1;
+  const indicatorsCount = indicatorsPerLine * indicatorsPerCol;
+  const indicatorPanel = document.querySelector('.indicatorPanel');
+  indicatorPanel.style.width = `${rW}px`;
+  indicatorPanel.style.height = `${rH}px`;
+  indicatorPanel.style.left = `${(window.innerWidth - rW) / 2}px`;
+  const indicators = [];
+
+  for (let i = 0; i < indicatorsCount; i++) {
+    const indicator = document.createElement('div');
+    indicator.classList.add('indicatorPanel__indicator');
+    indicatorPanel.appendChild(indicator);
+    indicator.style.width = `${indicatorWidth}px`;
+    indicator.style.height = `${indicatorHeight}px`;
+    indicators.push(indicator);
+  }
+
+  // const notes = document.querySelectorAll('.notes .note');
 
   let lastImageData;
 
   function detect(now) {
-
     drawVideo();
-
-    // console.log(now - then);
-
     if (now - then > 25) {
       blend();
       checkAreas();
       then = now;
     }
-
     requestAnimationFrame(detect);
   }
 
@@ -41,8 +56,7 @@ function detectMoving(video, rW, rH) {
   }
 
   function blend() {
-    const width = canvasSource.width;
-    const height = canvasSource.height;
+    const { width, height } = canvasSource;
     const sourceData = contextSource.getImageData(0, 0, width, height);
 
     if (!lastImageData){
@@ -74,26 +88,25 @@ function detectMoving(video, rW, rH) {
   }
 
   function checkAreas() {
-    for (let r = 0; r < notes.length; ++r) {
+    for (let r = 0; r < indicatorsCount; ++r) {
       let blendedData = contextBlended.getImageData(
-        notes[r].offsetLeft,
-        notes[r].offsetTop,
-        notes[r].offsetWidth,
-        notes[r].offsetHeight
+        indicators[r].offsetLeft,
+        indicators[r].offsetTop,
+        indicators[r].offsetWidth,
+        indicators[r].offsetHeight,
       );
 
       let i = 0;
       let average = 0;
       while (i < (blendedData.data.length / 4)) {
-        average += (blendedData.data[i*4] + blendedData.data[i*4+1] + blendedData.data[i*4+2]) / 3;
+        average += (blendedData.data[i * 4] + blendedData.data[i * 4 + 1] + blendedData.data[i * 4 + 2]) / 3;
         ++i;
       }
 
       average = Math.round(average / (blendedData.data.length / 4));
-      notes[r].classList.remove('active');
+      indicators[r].classList.remove('indicatorPanel__indicator_active');
       if (average > 10) {
-        // console.log('hit', r);
-        notes[r].classList.add('active');
+        indicators[r].classList.add('indicatorPanel__indicator_active');
       }
     }
   }

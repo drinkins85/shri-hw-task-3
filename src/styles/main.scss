@@ -8,8 +8,8 @@ body {
   margin: 0;
   padding: 0;
   position: relative;
-  /* overflow: hidden; */
-  background-color: black;
+  overflow: hidden;
+  background-color: #000;
 }
 
 .container {
@@ -20,40 +20,34 @@ body {
 
 .webgl {
   z-index: 1;
-  outline: darkred 1px solid;
+  outline: #8b0000 1px solid;
   margin: auto;
   filter: url('../img/filter.svg#inlineMatrix') contrast(350%) brightness(120%) saturate(90%);
 }
 
 .viz {
-  /*width: 100%;*/
   height: 100px;
   z-index: 2;
-  /*outline: green 1px solid;*/
   position: absolute;
-  top:100px;
+  top: 100px;
 }
 
-.notes {
+.indicatorPanel {
   position: absolute;
-
-  width: 800px;
-  height: 600px;
   z-index: 9;
 }
 
-.notes .note {
+.indicatorPanel__indicator {
   width: 50px;
   height: 50px;
   margin: 0;
-  /*background: rgba(255,255,255,1);*/
-  border-right: white 1px solid;
-  border-bottom: white 1px solid;
-  outline: black 1px solid;
+  border-right: #fff 1px solid;
+  border-bottom: #fff 1px solid;
+  outline: #000 1px solid;
   float: left;
   opacity: 0;
 }
 
-.notes .note.active {
+.indicatorPanel__indicator_active {
   opacity: 0.7;
 }
