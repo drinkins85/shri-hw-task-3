@@ -39,7 +39,7 @@ const common = {
               options: {
                 //minimize: isProduction(),
                 sourceMap: isProduction(),
-                publicPath: '/',
+                publicPath: '/css/',
               },
             },
             {
@@ -60,7 +60,7 @@ const common = {
             options: {
               outputPath: 'img/',
               name: '[name].[ext]',
-              publicPath: '/',
+              publicPath: '/img/',
             },
           },
         ],
