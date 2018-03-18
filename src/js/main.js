@@ -37,6 +37,7 @@ if (navigator.mediaDevices.getUserMedia) {
 function setupVideo(stream, videoWidth, videoHeight) {
   return new Promise((resolve, reject) => {
     const videoElement = document.createElement('video');
+    videoElement.style.display = 'none';
     // document.body.appendChild(videoElement);
     videoElement.width = videoWidth;
     videoElement.height = videoHeight;
