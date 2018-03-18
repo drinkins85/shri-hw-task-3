@@ -10,8 +10,8 @@ const devConfig = require('./webpack.development');
 const env = process.env.NODE_ENV;
 
 const PATHS = {
-  source: path.join(__dirname,'src'),
-  build: path.join(__dirname,'public'),
+  source: path.join(__dirname, 'src'),
+  build: path.join(__dirname, 'public'),
 };
 
 const common = {
@@ -37,7 +37,7 @@ const common = {
             {
               loader: 'css-loader',
               options: {
-                minimize: isProduction(),
+                //minimize: isProduction(),
                 sourceMap: isProduction(),
                 publicPath: '/',
               },
