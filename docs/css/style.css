@@ -21,8 +21,8 @@ body {
   z-index: 1;
   outline: #8b0000 1px solid;
   margin: auto;
-  -webkit-filter: url(img/filter.svg#inlineMatrix) contrast(350%) brightness(120%) saturate(90%);
-          filter: url(img/filter.svg#inlineMatrix) contrast(350%) brightness(120%) saturate(90%); }
+  -webkit-filter: url(filter.svg#inlineMatrix) contrast(350%) brightness(120%) saturate(90%);
+          filter: url(filter.svg#inlineMatrix) contrast(350%) brightness(120%) saturate(90%); }
 
 .viz {
   height: 100px;
