@@ -2,6 +2,7 @@ import '../styles/main.scss';
 
 import video from './video';
 import audioViz from './audioVisualizer';
+import detectMoving from './moveDetector';
 
 // global
 const width = window.innerWidth;
@@ -19,13 +20,30 @@ const webgl = document.querySelector('.webgl');
 webgl.width = rW;
 webgl.height = rH;
 
-let copyVideo = false;
-
 if (navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-    .then(stream => {
-      video(stream, webgl);
-      audioViz(stream, rW, rH);
+    .then((stream) => {
+      setupVideo(stream, rW, rH)
+        .then((videoElement) => {
+          video(webgl, videoElement);
+          detectMoving(videoElement, rW, rH);
+          audioViz(stream, rW, rH);
+        })
+        .catch(e => console.log(e));
     })
     .catch(e => console.log(e));
+}
+
+function setupVideo(stream, videoWidth, videoHeight) {
+  return new Promise((resolve, reject) => {
+    const videoElement = document.createElement('video');
+    document.body.appendChild(videoElement);
+    videoElement.width = videoWidth;
+    videoElement.height = videoHeight;
+    videoElement.srcObject = stream;
+    videoElement.autoplay = true;
+    videoElement.muted = true;
+    videoElement.onplay = () => resolve(videoElement);
+    videoElement.onerror = e => reject(e);
+  });
 }

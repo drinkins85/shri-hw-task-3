@@ -1,14 +1,16 @@
-function detectMoving(video, rW, rH) {
+function detectMoving(videoElement) {
+  const { width, height } = videoElement;
   let then = 0;
+
   const canvasSource = document.createElement('canvas');
-  canvasSource.width = rW;
-  canvasSource.height = rH;
+  canvasSource.width = width;
+  canvasSource.height = height;
   document.body.appendChild(canvasSource);
   const contextSource = canvasSource.getContext('2d');
 
   const canvasBlended = document.createElement('canvas');
-  canvasBlended.width = rW;
-  canvasBlended.height = rH;
+  canvasBlended.width = width;
+  canvasBlended.height = height;
   document.body.appendChild(canvasBlended);
   const contextBlended = canvasBlended.getContext('2d');
 
@@ -17,13 +19,13 @@ function detectMoving(video, rW, rH) {
 
   const indicatorsPerLine = 12;
   const indicatorsPerCol = 12;
-  const indicatorWidth = (rW / indicatorsPerLine) - 1;
-  const indicatorHeight = (rH / indicatorsPerCol) - 1;
+  const indicatorWidth = (width / indicatorsPerLine) - 1;
+  const indicatorHeight = (height / indicatorsPerCol) - 1;
   const indicatorsCount = indicatorsPerLine * indicatorsPerCol;
   const indicatorPanel = document.querySelector('.indicatorPanel');
-  indicatorPanel.style.width = `${rW}px`;
-  indicatorPanel.style.height = `${rH}px`;
-  indicatorPanel.style.left = `${(window.innerWidth - rW) / 2}px`;
+  indicatorPanel.style.width = `${width}px`;
+  indicatorPanel.style.height = `${height}px`;
+  indicatorPanel.style.left = `${(window.innerWidth - width) / 2}px`;
   const indicators = [];
 
   for (let i = 0; i < indicatorsCount; i++) {
@@ -52,14 +54,14 @@ function detectMoving(video, rW, rH) {
   detect();
 
   function drawVideo() {
-    contextSource.drawImage(video, 0, 0, canvasSource.width, canvasSource.height);
+    // contextSource.drawImage(videoElement, 0, 0, canvasSource.width, canvasSource.height);
+    contextSource.drawImage(videoElement, 0, 0, width, height);
   }
 
   function blend() {
-    const { width, height } = canvasSource;
     const sourceData = contextSource.getImageData(0, 0, width, height);
 
-    if (!lastImageData){
+    if (!lastImageData) {
       lastImageData = sourceData;
     }
     const blendedData = contextSource.createImageData(width, height);
@@ -71,10 +73,10 @@ function detectMoving(video, rW, rH) {
   function differenceAccuracy(target, data1, data2) {
     if (data1.length !== data2.length) return null;
     let i = 0;
-    while(i < (data1.length / 4)) {
-      let average1 = (data1[4 * i] + data1[4 * i + 1] + data1[4 * i + 2]) / 3;
-      let average2 = (data2[4 * i] + data2[4 * i + 1] + data2[4 * i + 2]) / 3;
-      let diff = threshold(Math.abs(average1 - average2));
+    while (i < (data1.length / 4)) {
+      const average1 = (data1[4 * i] + data1[4 * i + 1] + data1[4 * i + 2]) / 3;
+      const average2 = (data2[4 * i] + data2[4 * i + 1] + data2[4 * i + 2]) / 3;
+      const diff = threshold(Math.abs(average1 - average2));
       target[4 * i] = diff;
       target[4 * i + 1] = diff;
       target[4 * i + 2] = diff;
@@ -88,25 +90,25 @@ function detectMoving(video, rW, rH) {
   }
 
   function checkAreas() {
-    for (let r = 0; r < indicatorsCount; ++r) {
-      let blendedData = contextBlended.getImageData(
-        indicators[r].offsetLeft,
-        indicators[r].offsetTop,
-        indicators[r].offsetWidth,
-        indicators[r].offsetHeight,
+    for (let i = 0; i < indicatorsCount; i++) {
+      const blendedData = contextBlended.getImageData(
+        indicators[i].offsetLeft,
+        indicators[i].offsetTop,
+        indicators[i].offsetWidth,
+        indicators[i].offsetHeight,
       );
 
-      let i = 0;
+      let k = 0;
       let average = 0;
-      while (i < (blendedData.data.length / 4)) {
-        average += (blendedData.data[i * 4] + blendedData.data[i * 4 + 1] + blendedData.data[i * 4 + 2]) / 3;
-        ++i;
+      while (k < (blendedData.data.length / 4)) {
+        average += (blendedData.data[k * 4] + blendedData.data[k * 4 + 1] + blendedData.data[k * 4 + 2]) / 3;
+        k++;
       }
 
       average = Math.round(average / (blendedData.data.length / 4));
-      indicators[r].classList.remove('indicatorPanel__indicator_active');
+      indicators[i].classList.remove('indicatorPanel__indicator_active');
       if (average > 10) {
-        indicators[r].classList.add('indicatorPanel__indicator_active');
+        indicators[i].classList.add('indicatorPanel__indicator_active');
       }
     }
   }
