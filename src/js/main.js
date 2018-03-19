@@ -3,6 +3,7 @@ import '../styles/main.scss';
 import video from './video';
 import audioViz from './audioVisualizer';
 import detectMoving from './moveDetector';
+import delayCallFrequency from './delayCallFrequency';
 
 // global
 const width = window.innerWidth;
@@ -16,14 +17,11 @@ if (height < rH) {
   rH = height;
 }
 
-
-window.addEventListener('resize', function () {
-  location.reload();
-});
-
 const webgl = document.querySelector('.webgl');
 webgl.width = rW;
 webgl.height = rH;
+
+const errorElement = document.querySelector('.error');
 
 if (navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices.getUserMedia({ video: true, audio: true })
@@ -34,16 +32,15 @@ if (navigator.mediaDevices.getUserMedia) {
           detectMoving(videoElement, rW, rH);
           audioViz(stream, rW, rH);
         })
-        .catch(e => console.log(e));
+        .catch(e => showError(e, 'При попытке обработать видеопоток произошла ошибка!'));
     })
-    .catch(e => console.log(e));
+    .catch(e => showError(e, 'При попытке получить видеопоток произошла ошибка!'));
 }
 
 function setupVideo(stream, videoWidth, videoHeight) {
   return new Promise((resolve, reject) => {
     const videoElement = document.createElement('video');
     videoElement.style.display = 'none';
-    // document.body.appendChild(videoElement);
     videoElement.width = videoWidth;
     videoElement.height = videoHeight;
     videoElement.srcObject = stream;
@@ -54,3 +51,14 @@ function setupVideo(stream, videoWidth, videoHeight) {
   });
 }
 
+function showError(e, message) {
+  errorElement.classList.add('error_visible');
+  errorElement.querySelector('.error__message').innerHTML = message;
+  console.log(e);
+}
+
+let reload = delayCallFrequency(() => window.location.reload(), 1, 1000);
+
+window.addEventListener('load', function () {
+  window.addEventListener('resize', reload);
+});
